@@ -5,31 +5,67 @@ using TMPro;
 public class Timer : MonoBehaviour
 {
     private float time;
-    private TextMeshProUGUI timerText; // Guardamos la referencia aquí
-    private TextMeshProUGUI messageText;
+    private TextMeshProUGUI timerText; // VARIABLE CLASE TextMeshProUGUI PARA ALMACENAR TIEMPO
+    private TextMeshProUGUI messageText; // VARIABLE CLASE TextMeshProUGUI PARA ALMACENAR TEXTO
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         time = 55.0f;
-        //timerText = GameObject.Find("timerUI").GetComponent<TextMeshProUGUI>();
-        //messageText = GameObject.Find("userMessageUI").GetComponent<TextMeshProUGUI>();
+        // Busca el GameObject en la escena por su nombre y lo guarda en una variable secundaria
+        GameObject timerGo = GameObject.Find("timerUI");
+        if (timerGo!= null)
+        {
+            // Obtiene el componente TextMeshProUGUI y se almacena en la variable principal
+            timerText = timerGo.GetComponent<TextMeshProUGUI>();
+            
+            // Modifica propiedad .text
+            timerText.text = string.Empty; // string.Empty es mas limpio y eficiente que ""
+        }
+        else
+        {
+            Debug.LogError("No se encontro el GameObject llamado 'timerUI'. Verifique nombre");
+        }
+
+        // Repite el mismo proceso seguro para el mensaje del usuario
+        GameObject messageGo = GameObject.Find("userMessageUI");
+        if (messageGo!= null)
+        {
+            messageText = messageGo.GetComponent<TextMeshProUGUI>();
+            messageText.text = string.Empty;
+        }
+        else
+        {
+            Debug.LogError("No se encontro el GameObject llamado 'userMessageUI'. Verifique nombre");
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        time = time + Time.deltaTime;
-        int seconds = (int)(time % 60); // float a int y time = 0 cuando llega a 60, 1 cuando es 61, etc
+        time += Time.deltaTime; // Forma más limpia de sumar el tiempo
+        
+        int seconds = (int)(time % 60); //float a int y se reinicia cuando llega a 60 debido a %
         int minutes = (int)(time / 60);
-        //timerText.text = minutes + ":" + seconds;
+
+        // PROTEGE CONTRA NULOS Y FORMATO DE TEXTO
+        if (timerText != null)
+        {
+            // Usar ToString("00") asegura que siempre haya dos dígitos (ej. 01:05)
+            timerText.text = minutes.ToString("00") + ":" + seconds.ToString("00");
+        }
 
         if (time > 118)
         {
-            //messageText.text = "Time Is Almost Up.";
+            // PROTEGE CONTRA NULOS
+            if (messageText != null)
+            {
+                messageText.text = "Time Is Almost Up.";
+            }
         }
+        
         if (time > 120)
         {
-            print("TIME IS UP");
+            //print("TIME UP");
             SceneManager.LoadScene("maze");
         }
     }
