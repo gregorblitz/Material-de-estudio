@@ -17,7 +17,7 @@ public class CollectObjects : MonoBehaviour
         startDeleteMessage = false;
         timer = 0.0f;
         petrolCansCollected = 0;
-        /*GameObject messageAuxFind = GameObject.Find("userMessageUI");
+        GameObject messageAuxFind = GameObject.Find("userMessageUI");
 
         if (messageAuxFind!= null)
         {
@@ -31,7 +31,7 @@ public class CollectObjects : MonoBehaviour
         {
             Debug.LogError("No se encontro el GameObject llamado 'messageUI'. Verifique nombre");
         }
-        */
+        
 
     }
 
